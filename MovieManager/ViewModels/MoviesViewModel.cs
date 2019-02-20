@@ -25,6 +25,7 @@ namespace MovieManager.ViewModels
     {
       this.movies = movies;
 
+      // Collection to hold MovieViewModel objects
       MoviesCollection = new ObservableCollection<MovieViewModel>();
 
       // Fill collection with objects of type MovieViewModel

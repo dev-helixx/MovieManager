@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views = "clr-namespace:MovieManager.Views"
         WindowStartupLocation="CenterScreen"
+        SizeToContent="Width"
         mc:Ignorable="d"
-        Title="Movie Manager" Height="650" Width="1000">
+        Title="Movie Manager" Height="650" Width="800">
 
+  <!-- DataContext of whole application is MainWindowViewModel as defined in App.xaml.cs --> 
+  
   <Grid>
 
 
@@ -17,8 +20,9 @@
         <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
-      <!--First row-->
-      <views:MovieView Background="Beige" Grid.Row="0" x:Name="MovieView" Margin="5 5 5 5 " DataContext="{Binding MovieViewModel}"/>
+      
+      <!-- Set DataContext to MoviesViewModel for this specific view, and then in MovieView.xaml define what property to bind to -->
+      <views:MovieView Background="Beige" Grid.Row="0" x:Name="MovieView" Margin="5 5 5 5 " DataContext="{Binding MoviesViewModel}"/>
 
       <!--Second row-->
       <StackPanel Grid.Row="1">
