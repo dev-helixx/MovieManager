@@ -20,7 +20,7 @@ namespace MovieManager.ViewModels
       // MovieModel data parsed from MainWindowViewModel
       Movie = movie;
 
-      // Load values from Movie model into properties
+      // Load values from Movie model into propertiess
       LoadValues();
       
     }
