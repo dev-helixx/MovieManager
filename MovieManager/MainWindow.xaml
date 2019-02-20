@@ -1,0 +1,33 @@
+﻿<Window x:Class="MovieManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views = "clr-namespace:MovieManager.Views"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        Title="Movie Manager" Height="650" Width="1000">
+
+  <Grid>
+
+
+    <Grid x:Name = "MainContent" >
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <!--First row-->
+      <views:MovieView Background="Beige" Grid.Row="0" x:Name="MovieView" Margin="5 5 5 5 " DataContext="{Binding MovieViewModel}"/>
+
+      <!--Second row-->
+      <StackPanel Grid.Row="1">
+        <Button Width="100" Content="Load" Command="{Binding LoadCommand}" Margin="5 5 5 5"/>
+        <Button Width="100" Content="Save" Command="{Binding SaveCommand}" Margin="5 5 5 5"/>
+      </StackPanel>
+
+    </Grid>
+
+  </Grid>
+
+</Window>
