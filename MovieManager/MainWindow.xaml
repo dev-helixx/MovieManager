@@ -26,6 +26,7 @@
 
       <!--Second row-->
       <StackPanel Grid.Row="1">
+        <!-- Load and Save command are public properties defined in MainViewModel.cs -->
         <Button Width="100" Content="Load" Command="{Binding LoadCommand}" Margin="5 5 5 5"/>
         <Button Width="100" Content="Save" Command="{Binding SaveCommand}" Margin="5 5 5 5"/>
       </StackPanel>

@@ -9,49 +9,25 @@
   <Grid>
 
 
-      <!--Datacontext of this view is set to MoviesViewModel (in MainWindow.xaml) and below is bound to the propertu MoviesColleciton found in MoviesViewModel.cs --> 
-      <DataGrid x:Name="MoviesDataGrid" ItemsSource="{Binding MoviesCollection}" FontSize="16">
-        <!--<DataGrid.Columns>
-          --><!--Define Binding to each Column--><!--
-          <DataGridTextColumn Header="Title" Binding="{Binding }"/>
-          <DataGridTextColumn Header="Genre" Binding="{Binding Genre}" />
-          <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" />
-          <DataGridTextColumn Header="Release Year" Binding="{Binding ReleaseYear}" />
-          <DataGridTextColumn Header="Movie Seen" Binding="{Binding IsMovieSeen}" />
-        </DataGrid.Columns>-->
-      </DataGrid>
-    
-
-    <!--<StackPanel >
-
-      <ItemsControl ItemsSource="{Binding Movies}" >
-
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-
-            <StackPanel Orientation = "Horizontal" Margin="3 5 3 5">
-
-              --><!--<Button Content="Delete" Command="{Binding DeleteCommand}" Margin="5 5 5 5" Visibility="{Binding ButtonVisibility,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource booleanToVisibilityConverter}}"  />--><!--
-              <Label Content="First name:"></Label>
-              <TextBox Text = "{Binding FirstName, Mode = TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                        Width = "100" Margin = "3 5 3 5"/>
-              <Label Content="Last name:"></Label>
-              <TextBox Text = "{Binding LastName, Mode = TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                        Width = "100" Margin = "0 5 3 5"/>
-              <Label Content="Full name:"></Label>
-              <TextBlock Text = "{Binding FullName, Mode = OneWay}" 
-                        Margin = "0 5 3 5"/>
+      <!--Datacontext of this view is set to MoviesViewModel (in MainWindow.xaml) and below is bound to the propertu MoviesColleciton found in MoviesViewModel.cs -->
+    <DataGrid x:Name="MoviesDataGrid" ItemsSource="{Binding MoviesCollection}" FontSize="16" AutoGenerateColumns="false" >
+      <DataGrid.Columns>
+        <!--Define Binding to each Column (It looks in the MoviesCollection) -->
+        <DataGridTextColumn Header="Title" Binding="{Binding Title}" IsReadOnly="True"/>
+        <DataGridTextColumn Header="Genre" Binding="{Binding Genre}" IsReadOnly="True" />
+        <DataGridTextColumn Header="Duration" Binding="{Binding Duration, StringFormat={}{0} min}" IsReadOnly="True" />
+        <DataGridTextColumn Header="Release Year" Binding="{Binding ReleaseYear}" IsReadOnly="True" />
+        <DataGridTemplateColumn Header="Movie Seen">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding IsMovieSeen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+      </DataGrid.Columns>
+    </DataGrid>
 
 
-              --><!--<Button Content="Click here!" Width="70" Height="20" Command="{Binding X}" />--><!--
-
-            </StackPanel>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-
-      </ItemsControl>
-
-    </StackPanel>-->
   </Grid>
 
 </UserControl>
