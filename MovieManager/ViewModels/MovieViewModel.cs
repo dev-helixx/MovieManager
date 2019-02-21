@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using MovieManager.Models;
 
 namespace MovieManager.ViewModels
@@ -17,12 +18,25 @@ namespace MovieManager.ViewModels
     #region Constructors
     public MovieViewModel(MovieModel movie)
     {
-      // MovieModel data parsed from MainWindowViewModel
+      // MovieModel data passed from MainWindowViewModel
       Movie = movie;
 
       // Load values from Movie model into properties
       LoadValues();
-      
+
+     
+
+    }
+
+
+    public MovieViewModel()
+    {
+      PubSub<object>.Subscribe("PubSubTest", ToggleButtonCheckedHandler);
+    }
+
+    private void ToggleButtonCheckedHandler(object sender, PubSubEventArgs<object> args)
+    {
+      MessageBox.Show("Event Raised: " + (string)args.Item);
     }
     #endregion
 

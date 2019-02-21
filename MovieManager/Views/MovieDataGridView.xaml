@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="MovieManager.Views.MovieView"
+﻿<UserControl x:Class="MovieManager.Views.MovieDataGridView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,13 +7,11 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
   <Grid>
-
-
       <!--Datacontext of this view is set to MoviesViewModel (in MainWindow.xaml) and below is bound to the propertu MoviesColleciton found in MoviesViewModel.cs -->
-    <DataGrid x:Name="MoviesDataGrid" ItemsSource="{Binding MoviesCollection}" FontSize="16" AutoGenerateColumns="false" >
+    <DataGrid RowHeaderWidth="0"  x:Name="MoviesDataGrid" ItemsSource="{Binding MoviesCollection}" FontSize="16" CanUserAddRows="False" AutoGenerateColumns="false" >
       <DataGrid.Columns>
         <!--Define Binding to each Column (It looks in the MoviesCollection) -->
-        <DataGridTextColumn Header="Title" Binding="{Binding Title}" IsReadOnly="True"/>
+        <DataGridTextColumn Width="*" Header="Title" Binding="{Binding Title}" IsReadOnly="True"/>
         <DataGridTextColumn Header="Genre" Binding="{Binding Genre}" IsReadOnly="True" />
         <DataGridTextColumn Header="Duration" Binding="{Binding Duration, StringFormat={}{0} min}" IsReadOnly="True" />
         <DataGridTextColumn Header="Release Year" Binding="{Binding ReleaseYear}" IsReadOnly="True" />
@@ -26,8 +24,6 @@
         </DataGridTemplateColumn>
       </DataGrid.Columns>
     </DataGrid>
-
-
   </Grid>
-
+  
 </UserControl>

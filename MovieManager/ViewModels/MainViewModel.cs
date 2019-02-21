@@ -16,9 +16,72 @@ namespace MovieManager.ViewModel
   {
 
 
+    #region Constructors
+
+    private ReadingModel readingModel;
+    public MainWindowViewModel(ReadingModel readingModel)
+    {
+
+
+      // Publish an event with eventName = PubSubTest. Others can subscribe to said eventName, in order to catch when it is raised
+      PubSub<object>.PublishEvent("PubSubTest", PubSubCheckedHandler);
+
+      // ReadingModel contains a list (readingModel.Movies) of movie objects data fetched from the database
+      this.readingModel = readingModel;
+
+      // Pass list of movie objects to the MoviesViewModel
+      MoviesViewModel = new MoviesViewModel(readingModel.Movies);
+      // Add an event to check for changes in the viewmodel or if the ViewModels OnpropertyChanged event is called
+      MoviesViewModel.PropertyChanged += MoviesViewModel_PropertyChanged;
+      // Add event to check for changes in MainViewModel
+      this.PropertyChanged += MainWindowViewModel_PropertyChanged;
+
+      // Register commands so we are able to execute specific buttons
+      RegisterCommand(SaveCommand = new ActionCommand(Save, CanSave));
+      RegisterCommand(AddMovieCommand = new ActionCommand(AddMovie, CanAddMovie));
+      RegisterCommand(ExpandAddMovieViewCommand = new ActionCommand(ExpandOrCollapsAddMovieView, CanExpandView));
+      RegisterCommand(TestCommand = new ActionCommand(Test, CanTest));
+
+      ChangesDetected = true;
+
+    }
+
+
+
+    #endregion
+
+    #region Events
+    public event PubSubEventHandler<object> PubSubCheckedHandler;
+    #endregion
+
     #region Properties
 
     public MoviesViewModel MoviesViewModel { get; set; }
+
+
+    private bool _pubSubTestChecked;
+    public bool PubSubTestChecked
+    {
+      get
+      {
+        return _pubSubTestChecked;
+      }
+      set
+      {
+        if (_pubSubTestChecked != value)
+        {
+          _pubSubTestChecked = value;
+          //OnPropertyChanged(nameof(PubSubTestChecked));
+
+          // When PubSubTestChanged's value is changed to either true or false, raise even
+          if (value)
+            PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Red"));
+          else
+            PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Blue"));
+        }
+      }
+    }
+
 
 
     private bool _checkCanAddMovie;
@@ -146,45 +209,16 @@ namespace MovieManager.ViewModel
 
     #endregion
 
-
     #region Commands
 
     public ActionCommand LoadCommand { get; set; }
     public ActionCommand SaveCommand { get; set; }
     public ActionCommand AddMovieCommand { get; set; }
     public ActionCommand ExpandAddMovieViewCommand { get; set; }
+    public ActionCommand TestCommand { get; set; }
 
 
     #endregion
-
-
-    #region Constructors
-
-    private ReadingModel readingModel;
-    public MainWindowViewModel(ReadingModel readingModel)
-    {
-      // ReadingModel contains a list (readingModel.Movies) of movie objects data fetched from the database
-      this.readingModel = readingModel;
-
-      // Pass list of movie objects to the MoviesViewModel
-      MoviesViewModel = new MoviesViewModel(readingModel.Movies);
-      // Add an even to check for changes in the viewmodel or if the ViewModels OnpropertyChanged event is called
-      MoviesViewModel.PropertyChanged += MoviesViewModel_PropertyChanged;
-
-      // Add event to check for changes in MainViewModel
-      this.PropertyChanged += MainWindowViewModel_PropertyChanged;
-
-      // Register commands so we are able to execute specific buttons
-      RegisterCommand(SaveCommand = new ActionCommand(Save, CanSave));
-      RegisterCommand(AddMovieCommand = new ActionCommand(AddMovie, CanAddMovie));
-      RegisterCommand(ExpandAddMovieViewCommand = new ActionCommand(ExpandView, CanExpandView));
-
-
-    }
-
-
-    #endregion
-
 
     #region PropertyChanged Events
 
@@ -205,9 +239,8 @@ namespace MovieManager.ViewModel
     }
 
     #endregion
-    
 
-    #region Boolean checks
+    #region Bool Return-Methods
     private bool CanExpandView()
     {
       return true;
@@ -225,11 +258,18 @@ namespace MovieManager.ViewModel
       return ChangesDetected;
     }
 
+    private bool CanTest()
+    {
+      // Can always check
+      return true;
+    }
+
+
     #endregion
 
-
     #region Methods
-    private void ExpandView()
+
+    private void ExpandOrCollapsAddMovieView()
     {
 
       if (!AddMovieViewVisibility)
@@ -245,6 +285,16 @@ namespace MovieManager.ViewModel
     }
 
 
+
+    private void Test()
+    {
+
+      // Change value of PubSubTestChecked raise published event
+      PubSubTestChecked = !PubSubTestChecked ? true : false;
+    }
+
+
+
     private void AddMovie()
     {
 
@@ -257,19 +307,14 @@ namespace MovieManager.ViewModel
       // Enable save button
       ChangesDetected = true;
 
-      //MessageBox.Show(
-      //  "Title:" + AddTitle + "\n" +
-      //  "Genre:" + AddGenre + "\n" +
-      //  "Duration:" + AddDuration + "\n" +
-      //  "Release:" + AddReleaseYear + "\n" +
-      //  "IsSeen:" + AddIsSeen);
-
     }
 
 
     // Method for handling save button logic
     private void Save()
     {
+
+    
 
       string DBPath = @"c:\tmp\movie_db.txt";
       //* Xml Serilizer to write data to an existing txt file */
@@ -288,11 +333,11 @@ namespace MovieManager.ViewModel
 
       // Deactive Save button when values are saved
       ChangesDetected = false;
+      ExpandOrCollapsAddMovieView();
 
     }
 
     #endregion
-
 
   }
 }

@@ -44,4 +44,44 @@ namespace MovieManager.ViewModels
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
     }
   }
+
+
+  /********************************* Pub/Sub Implementation /*********************************/
+
+  public delegate void PubSubEventHandler<T>(object sender, PubSubEventArgs<T> args);
+
+  public class PubSubEventArgs<T> : EventArgs
+  {
+    public T Item { get; set; }
+
+    public PubSubEventArgs(T item)
+    {
+      Item = item;
+    }
+  }
+
+  public class PubSub<T>
+  {
+    private static Dictionary<string, PubSubEventHandler<T>> events =
+            new Dictionary<string, PubSubEventHandler<T>>();
+
+    public static void PublishEvent(string eventName, PubSubEventHandler<T> handler)
+    {
+      if (!events.ContainsKey(eventName))
+        events.Add(eventName, handler);
+    }
+    public static void RaiseEvent(string eventName, object sender, PubSubEventArgs<T> args)
+    {
+      if (events.ContainsKey(eventName) && events[eventName] != null)
+        events[eventName](sender, args);
+    }
+    public static void Subscribe(string eventName, PubSubEventHandler<T> handler)
+    {
+      if (events.ContainsKey(eventName))
+        events[eventName] += handler;
+    }
+  }
+
+  /****************************************************************************************/
+
 }

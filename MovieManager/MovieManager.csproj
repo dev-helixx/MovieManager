@@ -63,8 +63,8 @@
     <Compile Include="Views\AddMovieView.xaml.cs">
       <DependentUpon>AddMovieView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MovieView.xaml.cs">
-      <DependentUpon>MovieView.xaml</DependentUpon>
+    <Compile Include="Views\MovieDataGridView.xaml.cs">
+      <DependentUpon>MovieDataGridView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -83,7 +83,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MovieView.xaml">
+    <Page Include="Views\MovieDataGridView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

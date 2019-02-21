@@ -52,22 +52,23 @@ namespace MovieManager.ViewModels
 
     public void LoadValues(List<MovieModel> movies)
     {
+
+      // Run constructor containing pub/sub event
+      new MovieViewModel();
+
       MoviesCollection.Clear();
 
       foreach (MovieModel movie in movies)
       {
-
         // For each movie object add a PropertyChanged event to it
         MovieViewModel mvm = new MovieViewModel(movie);
         mvm.PropertyChanged += Mvm_PropertyChanged;
         MoviesCollection.Add(mvm);
 
-
         //MoviesCollection.Add(new MovieViewModel(movie));
-
-        
-
       }
+
+
     }
 
     public void AddNewMovieToCollection(string title, string genre, int duration, int releaseYear, bool seen)

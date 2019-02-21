@@ -18,6 +18,7 @@ namespace MovieManager
     protected override void OnStartup(StartupEventArgs e)
     {
       base.OnStartup(e);
+
       ReadingModel readingModel = new ReadingModel(@"c:\tmp\movie_db.txt"); // Reading Model ( Reads data from db file and saves it in a list of movie objects)
 
       var MainWindowViewModel = new MainWindowViewModel(readingModel); // Pass model to MainViewModel

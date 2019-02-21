@@ -29,7 +29,7 @@
     <Label Content="Release Year" Grid.Row="0" Grid.Column="3"/>
     <Label Content="Seen " Grid.Row="0" Grid.Column="4"/>
 
-    <TextBox x:Name="Title" Grid.Row="1" Grid.Column="0" Width="300" Text="{Binding AddTitle, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+    <TextBox x:Name="Title" Grid.Row="1" Grid.Column="0" Width="300"  Text="{Binding AddTitle, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
     <TextBox x:Name="Genre" Grid.Row="1" Grid.Column="1" Width="100" Text="{Binding AddGenre, UpdateSourceTrigger=PropertyChanged}"></TextBox>
     <TextBox x:Name="Duration" Grid.Row="1" Grid.Column="2" Width="Auto" Text="{Binding AddDuration, UpdateSourceTrigger=PropertyChanged}"></TextBox>
     <TextBox x:Name="ReleasyYear" Grid.Row="1" Grid.Column="3" Width="Auto" Text="{Binding AddReleaseYear, UpdateSourceTrigger=PropertyChanged}"></TextBox>
