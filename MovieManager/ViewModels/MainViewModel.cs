@@ -20,8 +20,97 @@ namespace MovieManager.ViewModel
 
     public MoviesViewModel MoviesViewModel { get; set; }
 
-    public ActionCommand LoadCommand { get; set; }
-    public ActionCommand SaveCommand { get; set; }
+
+    private bool _checkCanAddMovie;
+    public bool CheckCanAddMovie
+    {
+      get { return _checkCanAddMovie; }
+      set
+      {
+        if (value != _checkCanAddMovie)
+        {
+          _checkCanAddMovie = value;
+          OnPropertyChanged(nameof(CheckCanAddMovie));
+        }
+      }
+    }
+
+
+
+    private string _addTitle;
+    public string AddTitle
+    {
+      get { return _addTitle; }
+      set
+      {
+        if(_addTitle != value)
+        {
+          _addTitle = value;
+          OnPropertyChanged(nameof(AddTitle));
+        }
+      }
+    }
+
+    private string _addGenre;
+    public string AddGenre
+    {
+      get { return _addGenre; }
+      set
+      {
+        if (_addGenre != value)
+        {
+          _addGenre = value;
+          OnPropertyChanged(nameof(AddGenre));
+        }
+      }
+    }
+
+    private int _addDuration;
+    public int AddDuration
+    {
+      get
+      {
+        return _addDuration;
+      }
+      set
+      {
+        if (_addDuration != value)
+        {
+          _addDuration = value;
+          OnPropertyChanged(nameof(AddDuration));
+        }
+      }
+    }
+
+    private int _addReleaseYear;
+    public int AddReleaseYear
+    {
+      get
+      {
+        return _addReleaseYear;
+      }
+      set
+      {
+        if (_addReleaseYear != value)
+        {
+          _addReleaseYear = value;
+          OnPropertyChanged(nameof(AddReleaseYear));
+        }
+      }
+    }
+    private bool _addIsSeen;
+    public bool AddIsSeen
+    {
+      get { return _addIsSeen; }
+      set
+      {
+        if(_addIsSeen != value)
+        {
+          _addIsSeen = value;
+          OnPropertyChanged(nameof(AddIsSeen));
+        }
+      }
+    }
 
 
 
@@ -40,9 +129,36 @@ namespace MovieManager.ViewModel
       }
     }
 
+
+    private bool _addMovieViewVisibility;
+    public bool AddMovieViewVisibility
+    {
+      get { return _addMovieViewVisibility; }
+      set
+      {
+        if(_addMovieViewVisibility != value)
+        {
+          _addMovieViewVisibility = value;
+          OnPropertyChanged(nameof(AddMovieViewVisibility));
+        }
+      }
+    }
+
     #endregion
 
 
+    #region Commands
+
+    public ActionCommand LoadCommand { get; set; }
+    public ActionCommand SaveCommand { get; set; }
+    public ActionCommand AddMovieCommand { get; set; }
+    public ActionCommand ExpandAddMovieViewCommand { get; set; }
+
+
+    #endregion
+
+
+    #region Constructors
 
     private ReadingModel readingModel;
     public MainWindowViewModel(ReadingModel readingModel)
@@ -55,17 +171,52 @@ namespace MovieManager.ViewModel
       // Add an even to check for changes in the viewmodel or if the ViewModels OnpropertyChanged event is called
       MoviesViewModel.PropertyChanged += MoviesViewModel_PropertyChanged;
 
+      // Add event to check for changes in MainViewModel
+      this.PropertyChanged += MainWindowViewModel_PropertyChanged;
 
       // Register commands so we are able to execute specific buttons
       RegisterCommand(SaveCommand = new ActionCommand(Save, CanSave));
-
+      RegisterCommand(AddMovieCommand = new ActionCommand(AddMovie, CanAddMovie));
+      RegisterCommand(ExpandAddMovieViewCommand = new ActionCommand(ExpandView, CanExpandView));
 
 
     }
 
+
+    #endregion
+
+
+    #region PropertyChanged Events
+
+    // This event gets called whenever a change in any of MainViewModels properties (those who have UpdateSourceTrigger attached) is detected
+    private void MainWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+      // All fields except IsSeen should be edited before one can add a movie
+      if (AddTitle != null && AddGenre != null && AddDuration != 0 && AddReleaseYear != 0)
+      {
+        CheckCanAddMovie = true;
+      }
+    }
+
+    // This event gets called whenever a change in any of MovieModel's properties is detected
     private void MoviesViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
       ChangesDetected = true;
+    }
+
+    #endregion
+    
+
+    #region Boolean checks
+    private bool CanExpandView()
+    {
+      return true;
+    }
+
+    private bool CanAddMovie()
+    {
+      // You can always add new movoe
+      return CheckCanAddMovie;
     }
 
     // Method for determining whether save button can be clicked or not
@@ -73,6 +224,48 @@ namespace MovieManager.ViewModel
     {
       return ChangesDetected;
     }
+
+    #endregion
+
+
+    #region Methods
+    private void ExpandView()
+    {
+
+      if (!AddMovieViewVisibility)
+      {
+        AddMovieViewVisibility = true;
+      }
+      else
+      {
+        AddMovieViewVisibility = false;
+
+      }
+      //AddMovieViewVisibility = !AddMovieViewVisibility ? true : false;
+    }
+
+
+    private void AddMovie()
+    {
+
+      // Add new entry to collection
+      MoviesViewModel.AddNewMovieToCollection(AddTitle, AddGenre, AddDuration, AddReleaseYear, AddIsSeen);
+      // Clear fields 
+      AddTitle = ""; AddGenre = ""; AddDuration = 0; AddReleaseYear = 0;
+      // If Movie is seen, uncheck 
+      if (AddIsSeen) AddIsSeen = false;
+      // Enable save button
+      ChangesDetected = true;
+
+      //MessageBox.Show(
+      //  "Title:" + AddTitle + "\n" +
+      //  "Genre:" + AddGenre + "\n" +
+      //  "Duration:" + AddDuration + "\n" +
+      //  "Release:" + AddReleaseYear + "\n" +
+      //  "IsSeen:" + AddIsSeen);
+
+    }
+
 
     // Method for handling save button logic
     private void Save()
@@ -85,7 +278,7 @@ namespace MovieManager.ViewModel
       {
         using (TextWriter tw = new StreamWriter(DBPath))
         {
-          // Update main model object with new values from textboxes
+          // Update reading model object with new values
           readingModel.Movies = MoviesViewModel.SaveValues();
 
           x.Serialize(tw, readingModel);
@@ -97,5 +290,9 @@ namespace MovieManager.ViewModel
       ChangesDetected = false;
 
     }
+
+    #endregion
+
+
   }
 }

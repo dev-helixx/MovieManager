@@ -70,6 +70,17 @@ namespace MovieManager.ViewModels
       }
     }
 
+    public void AddNewMovieToCollection(string title, string genre, int duration, int releaseYear, bool seen)
+    {
+      MovieModel movie = new MovieModel { Title = title, Genre = genre, Duration = duration, ReleaseYear = releaseYear, IsMovieSeen = seen };
+
+      MovieViewModel mvm = new MovieViewModel(movie);
+      mvm.PropertyChanged += Mvm_PropertyChanged;
+
+      MoviesCollection.Add(mvm);
+      
+    }
+
     private void Mvm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
       // Call OnPropertyChanged each time a change is detected in a movie object, which invokes the ViewModels OnPropertyChanged event defined in MainViewModel

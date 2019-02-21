@@ -9,23 +9,50 @@
         mc:Ignorable="d"
         Title="Movie Manager" Height="650" Width="800">
 
-  <!-- DataContext of whole application is MainWindowViewModel as defined in App.xaml.cs --> 
+
+
+  <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+  </Window.Resources>
+
+
+  <!-- DataContext of whole application is MainViewModel as defined in App.xaml.cs --> 
   
   <Grid>
 
 
     <Grid x:Name = "MainContent" >
       <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
         <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
-      
+      <Grid x:Name = "NavBar" Grid.Row = "0" HorizontalAlignment="Left">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width = "*"  />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+       
+        <!--First row, column 0 and 1-->
+        <!--<CheckBox Margin="5 7 5 5" x:Name="EditCheckBox" Content="Edit mode" Grid.Row="0" Grid.Column="0"  IsChecked="{Binding EditIsChecked, UpdateSourceTrigger=PropertyChanged}" Command = "{Binding EditCommand}" />-->
+        <Button Margin="5" Padding="5 5 5 5" x:Name="AddMovie" Content="Add new Movie" Grid.Row="0" Grid.Column="1" Command="{Binding ExpandAddMovieViewCommand}"/>
+      </Grid>
+
+
+      <views:AddMovieView Grid.Row="1" Visibility="{Binding AddMovieViewVisibility,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource booleanToVisibilityConverter}}" />
+
       <!-- Set DataContext to MoviesViewModel for this specific view, and then in MovieView.xaml define what property to bind to -->
-      <views:MovieView Background="Beige" Grid.Row="0" x:Name="MovieView" Margin="5 5 5 5 " DataContext="{Binding MoviesViewModel}"/>
+      <views:MovieView Background="Beige" Grid.Row="2" x:Name="MovieView" Margin="5 5 5 5 " DataContext="{Binding MoviesViewModel}"/>
 
       <!--Second row-->
-      <StackPanel Grid.Row="1">
+      <StackPanel Grid.Row="3">
         <!-- Load and Save command are public properties defined in MainViewModel.cs -->
         <Button Width="100" Content="Load" Command="{Binding LoadCommand}" Margin="5 5 5 5"/>
         <Button Width="100" Content="Save" Command="{Binding SaveCommand}" Margin="5 5 5 5"/>
