@@ -12,14 +12,18 @@ using MovieManager.ViewModels;
 
 namespace MovieManager.ViewModel
 {
-  public class MainWindowViewModel : BaseViewModel
+  public class MainViewModel : BaseViewModel
   {
 
+
+    #region Fields
+    private const string DBPath = @"c:\tmp\movie_db.txt";
+    #endregion
 
     #region Constructors
 
     private ReadingModel readingModel;
-    public MainWindowViewModel(ReadingModel readingModel)
+    public MainViewModel(ReadingModel readingModel)
     {
 
 
@@ -38,14 +42,13 @@ namespace MovieManager.ViewModel
 
       // Register commands so we are able to execute specific buttons
       RegisterCommand(SaveCommand = new ActionCommand(Save, CanSave));
+      RegisterCommand(LoadCommand = new ActionCommand(Load, CanLoad));
       RegisterCommand(AddMovieCommand = new ActionCommand(AddMovie, CanAddMovie));
       RegisterCommand(ExpandAddMovieViewCommand = new ActionCommand(ExpandOrCollapsAddMovieView, CanExpandView));
       RegisterCommand(TestCommand = new ActionCommand(Test, CanTest));
 
-      ChangesDetected = true;
 
     }
-
 
 
     #endregion
@@ -82,8 +85,22 @@ namespace MovieManager.ViewModel
       }
     }
 
+    // Controls whether Load button is enabled or not
+    private bool _checkCanLoad;
+    public bool CheckCanLoad
+    {
+      get { return _checkCanLoad; }
+      set
+      {
+        if (value != _checkCanLoad)
+        {
+          _checkCanLoad = value;
+          OnPropertyChanged(nameof(CheckCanLoad));
+        }
+      }
+    }
 
-
+    // Controls whether Add button is enabled or not
     private bool _checkCanAddMovie;
     public bool CheckCanAddMovie
     {
@@ -264,10 +281,41 @@ namespace MovieManager.ViewModel
       return true;
     }
 
+    // Method for determining whether load button can be clicked or not
+    private bool CanLoad()
+    {
+      return CheckCanLoad;
+    }
+
+
 
     #endregion
 
     #region Methods
+
+
+
+    private void Load()
+    {
+      // Load new values from db into new reading object
+      ReadingModel readingModel = new ReadingModel(DBPath);
+      // Update values
+      UpdateValues(readingModel);
+
+      MessageBox.Show("Values loaded:");
+
+      CheckCanLoad = false;
+    }
+
+
+    public void UpdateValues(ReadingModel readingModel)
+    {
+      // Update values by putting loaded values into movies collection, which then repopulates the datagrid since the collectio changed
+      MoviesViewModel.LoadValues(readingModel.Movies);
+      // Deactivate Load button after values updated
+      ChangesDetected = false;
+    }
+
 
     private void ExpandOrCollapsAddMovieView()
     {
@@ -313,10 +361,7 @@ namespace MovieManager.ViewModel
     // Method for handling save button logic
     private void Save()
     {
-
-    
-
-      string DBPath = @"c:\tmp\movie_db.txt";
+      
       //* Xml Serilizer to write data to an existing txt file */
       XmlSerializer x = new XmlSerializer(typeof(ReadingModel));
       if (!string.IsNullOrWhiteSpace(DBPath) && File.Exists(DBPath))
