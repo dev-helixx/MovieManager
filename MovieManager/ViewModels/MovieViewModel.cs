@@ -36,7 +36,7 @@ namespace MovieManager.ViewModels
 
     private void ToggleButtonCheckedHandler(object sender, PubSubEventArgs<object> args)
     {
-      MessageBox.Show("Event Raised: " + (string)args.Item);
+      MessageBox.Show("PubSub event item received: " + (string)args.Item);
     }
     #endregion
 

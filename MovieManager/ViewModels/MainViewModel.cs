@@ -15,7 +15,6 @@ namespace MovieManager.ViewModel
   public class MainViewModel : BaseViewModel
   {
 
-
     #region Fields
     private const string DBPath = @"c:\tmp\movie_db.txt";
     #endregion
@@ -378,7 +377,13 @@ namespace MovieManager.ViewModel
 
       // Deactive Save button when values are saved
       ChangesDetected = false;
+      // Collaps add movie view
       ExpandOrCollapsAddMovieView();
+
+      // Deactivate Load button. 
+      // Because changes are saved to the db file, the filewatcher notices the change and activates the load button.
+      // Consider making some kind of validation to check for same content in db file as that in the datagrid
+      CheckCanLoad = false;
 
     }
 
