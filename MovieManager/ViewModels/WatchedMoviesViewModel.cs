@@ -10,7 +10,7 @@ using MovieManager.Models;
 
 namespace MovieManager.ViewModels
 {
-  public class WatchedMoviesViewModel
+  public class WatchedMoviesViewModel : BaseViewModel
   {
 
     #region Private Fields
@@ -34,6 +34,10 @@ namespace MovieManager.ViewModels
       LoadValues(watchedMovies);
     }
 
+    #endregion
+
+
+    #region Methods
     public void LoadValues(List<MovieModel> watchedMovies)
     {
 
@@ -46,16 +50,42 @@ namespace MovieManager.ViewModels
         mvm.PropertyChanged += Mvm_PropertyChanged;
         WatchedMoviesCollection.Add(mvm);
 
-        //MoviesCollection.Add(new MovieViewModel(movie));
+      }
+    }
+
+
+    public void AddNewMovieToCollection(string title, string genre, int duration, int releaseYear, bool seen)
+    {
+      MovieModel movie = new MovieModel { Title = title, Genre = genre, Duration = duration, ReleaseYear = releaseYear, IsMovieSeen = seen };
+
+      MovieViewModel mvm = new MovieViewModel(movie);
+      mvm.PropertyChanged += Mvm_PropertyChanged;
+
+      WatchedMoviesCollection.Add(mvm);
+
+    }
+
+    public List<MovieModel> SaveValues()
+    {
+
+      List<MovieModel> result = new List<MovieModel>();
+
+      foreach (MovieViewModel movie in WatchedMoviesCollection)
+      {
+        // Overrides existing content in the list
+        result.Add(movie.SaveValues());
       }
 
-      #endregion
-
+      return result;
     }
-
     private void Mvm_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-      MessageBox.Show("Watched Movies property changed");
+      OnPropertyChanged(nameof(Mvm_PropertyChanged));
     }
+
+
+    #endregion
+
   }
+
 }

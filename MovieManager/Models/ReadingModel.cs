@@ -9,20 +9,22 @@ namespace MovieManager.Models
   public class ReadingModel
   {
 
-    #region Properties
-    public List<MovieModel> Movies { get; set; } // Name of list HAS to match the node in the XML file!
 
-    public List<MovieModel> WatchedMovies { get; set; }
+    #region Properties
+    public List<MovieModel> WatchedMovies { get; set; } // Name of list HAS to match the node in the XML file!
     public List<MovieModel> NonWatchedMovies { get; set; }
+
     #endregion
 
     #region Constructors
     public ReadingModel()
     {
-      Movies = new List<MovieModel>();
+
       WatchedMovies = new List<MovieModel>();
       NonWatchedMovies = new List<MovieModel>();
+
     }
+
 
     public ReadingModel(string DBPath)
     {
@@ -30,37 +32,46 @@ namespace MovieManager.Models
       // Fetch data from DB file
       ReadingModel readingModel = new ReadingModel();
       XmlSerializer x = new XmlSerializer(typeof(ReadingModel));
-      using (TextReader tr = new StreamReader(DBPath))
+      if (!string.IsNullOrWhiteSpace(DBPath) && File.Exists(DBPath))
       {
-        // readingModel now contains all movie objects from the db file
-        readingModel = (ReadingModel)x.Deserialize(tr);
+        using (TextReader tr = new StreamReader(DBPath))
+        {
+            readingModel = (ReadingModel)x.Deserialize(tr);
+        }
       }
-
-      // Fill Movies list with movies fetched from db
-      Movies = readingModel.Movies;
+       
 
 
       var tempWatched = new List<MovieModel>();
       var tempNonWatched = new List<MovieModel>();
 
 
-      // Fill Lists with movies depending on if the movie is seen or not
-      foreach (var movie in readingModel.Movies)
+      // sort watched movies and save in temp list
+      foreach (var watchedMovie in readingModel.WatchedMovies)
       {
-        if (movie.IsMovieSeen)
-          tempWatched.Add(movie);
+
+        if (watchedMovie.IsMovieSeen)
+          tempWatched.Add(watchedMovie);
         else
-          tempNonWatched.Add(movie);
+          tempNonWatched.Add(watchedMovie);
+
+
 
       }
+      // Sort non watched movies and save in temp list
+      foreach (var nonWatchedMovie in readingModel.NonWatchedMovies)
+      {
+        if (nonWatchedMovie.IsMovieSeen)
+          tempWatched.Add(nonWatchedMovie);
+        else
+          tempNonWatched.Add(nonWatchedMovie);
 
+      }
 
       WatchedMovies = tempWatched;
       NonWatchedMovies = tempNonWatched;
 
     }
-
-    
 
     #endregion
   }

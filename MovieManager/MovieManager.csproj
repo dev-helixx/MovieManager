@@ -60,14 +60,14 @@
     <Compile Include="Models\ReadingModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\MoviesViewModel.cs" />
+    <Compile Include="ViewModels\NonWatchedMoviesViewModel.cs" />
     <Compile Include="ViewModels\MovieViewModel.cs" />
     <Compile Include="ViewModels\WatchedMoviesViewModel.cs" />
     <Compile Include="Views\AddMovieView.xaml.cs">
       <DependentUpon>AddMovieView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MovieDataGridView.xaml.cs">
-      <DependentUpon>MovieDataGridView.xaml</DependentUpon>
+    <Compile Include="Views\NonWatchedMoviesDataGridView.xaml.cs">
+      <DependentUpon>NonWatchedMoviesDataGridView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WatchedMoviesDataGridView.xaml.cs">
       <DependentUpon>WatchedMoviesDataGridView.xaml</DependentUpon>
@@ -89,7 +89,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MovieDataGridView.xaml">
+    <Page Include="Views\NonWatchedMoviesDataGridView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

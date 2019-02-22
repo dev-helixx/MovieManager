@@ -9,28 +9,28 @@ using MovieManager.Models;
 
 namespace MovieManager.ViewModels
 {
-  public class MoviesViewModel : BaseViewModel
+  public class NonWatchedMoviesViewModel : BaseViewModel
   {
 
     #region Private Fields
-    private List<MovieModel> movies;
+    private List<MovieModel> nonWatchedMovies;
     #endregion
 
     #region Properties
-    public ObservableCollection<MovieViewModel> MoviesCollection { get; set; }
+    public ObservableCollection<MovieViewModel> NonWatchedMoviesCollection { get; set; }
     #endregion
 
 
     #region Constructors
-    public MoviesViewModel(List<MovieModel> movies)
+    public NonWatchedMoviesViewModel(List<MovieModel> nonWatchedMovies)
     {
-      this.movies = movies;
+      this.nonWatchedMovies = nonWatchedMovies;
 
       // Collection to hold MovieViewModel objects
-      MoviesCollection = new ObservableCollection<MovieViewModel>();
+      NonWatchedMoviesCollection = new ObservableCollection<MovieViewModel>();
 
       // Fill collection with objects of type MovieViewModel
-      LoadValues(movies);
+      LoadValues(nonWatchedMovies);
     }
     #endregion
 
@@ -41,7 +41,7 @@ namespace MovieManager.ViewModels
 
       List<MovieModel> result = new List<MovieModel>();
 
-      foreach (MovieViewModel movie in MoviesCollection)
+      foreach (MovieViewModel movie in NonWatchedMoviesCollection)
       {
         // Overrides existing content in the list
         result.Add(movie.SaveValues());
@@ -50,20 +50,20 @@ namespace MovieManager.ViewModels
       return result;
     }
 
-    public void LoadValues(List<MovieModel> movies)
+    public void LoadValues(List<MovieModel> nonWatchedMovies)
     {
 
       // Run constructor containing pub/sub event
       new MovieViewModel();
 
-      MoviesCollection.Clear();
+      NonWatchedMoviesCollection.Clear();
 
-      foreach (MovieModel movie in movies)
+      foreach (MovieModel movie in nonWatchedMovies)
       {
         // For each movie object add a PropertyChanged event to it
         MovieViewModel mvm = new MovieViewModel(movie);
         mvm.PropertyChanged += Mvm_PropertyChanged;
-        MoviesCollection.Add(mvm);
+        NonWatchedMoviesCollection.Add(mvm);
 
         //MoviesCollection.Add(new MovieViewModel(movie));
       }
@@ -78,7 +78,7 @@ namespace MovieManager.ViewModels
       MovieViewModel mvm = new MovieViewModel(movie);
       mvm.PropertyChanged += Mvm_PropertyChanged;
 
-      MoviesCollection.Add(mvm);
+      NonWatchedMoviesCollection.Add(mvm);
       
     }
 

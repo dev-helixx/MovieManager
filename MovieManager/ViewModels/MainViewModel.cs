@@ -33,13 +33,12 @@ namespace MovieManager.ViewModel
       // ReadingModel contains a list (readingModel.Movies) of movie objects data fetched from the database
       this.readingModel = readingModel;
 
-      
 
       WatchedMoviesViewModel = new WatchedMoviesViewModel(readingModel.WatchedMovies);
-
+      WatchedMoviesViewModel.PropertyChanged += MoviesViewModel_PropertyChanged;
 
       // Pass list of movie objects to the MoviesViewModel
-      MoviesViewModel = new MoviesViewModel(readingModel.Movies);
+      MoviesViewModel = new NonWatchedMoviesViewModel(readingModel.NonWatchedMovies);
       // Add an event to check for changes in the viewmodel or if the ViewModels OnpropertyChanged event is called
       MoviesViewModel.PropertyChanged += MoviesViewModel_PropertyChanged;
       // Add event to check for changes in MainViewModel
@@ -64,7 +63,7 @@ namespace MovieManager.ViewModel
 
     #region Properties
 
-    public MoviesViewModel MoviesViewModel { get; set; }
+    public NonWatchedMoviesViewModel MoviesViewModel { get; set; }
     public WatchedMoviesViewModel WatchedMoviesViewModel { get; set; }
 
     private bool _pubSubTestChecked;
@@ -299,7 +298,8 @@ namespace MovieManager.ViewModel
       // Update values
       UpdateValues(readingModel);
 
-      MessageBox.Show("Values loaded:");
+      if(ChangesDetected)
+        MessageBox.Show("Values loaded:"); // Only show dialog if actual changes has been made in the grid
 
       CheckCanLoad = false;
     }
@@ -308,7 +308,8 @@ namespace MovieManager.ViewModel
     public void UpdateValues(ReadingModel readingModel)
     {
       // Update values by putting loaded values from DB into movies collection, which then repopulates the datagrid since the collection changed
-      MoviesViewModel.LoadValues(readingModel.Movies);
+      MoviesViewModel.LoadValues(readingModel.NonWatchedMovies);
+      WatchedMoviesViewModel.LoadValues(readingModel.WatchedMovies);
       // Deactivate Load button after values updated
       ChangesDetected = false;
     }
@@ -334,10 +335,6 @@ namespace MovieManager.ViewModel
     private void Test()
     {
 
-
-
-
-
       // Change value of PubSubTestChecked raise published event
       PubSubTestChecked = !PubSubTestChecked ? true : false;
 
@@ -355,7 +352,12 @@ namespace MovieManager.ViewModel
     {
 
       // Add new entry to collection
-      MoviesViewModel.AddNewMovieToCollection(AddTitle, AddGenre, AddDuration, AddReleaseYear, AddIsSeen);
+      if(AddIsSeen)
+        WatchedMoviesViewModel.AddNewMovieToCollection(AddTitle, AddGenre, AddDuration, AddReleaseYear, AddIsSeen);
+      else
+        MoviesViewModel.AddNewMovieToCollection(AddTitle, AddGenre, AddDuration, AddReleaseYear, AddIsSeen);
+      
+
       // Clear fields 
       AddTitle = ""; AddGenre = ""; AddDuration = 0; AddReleaseYear = 0;
       // If Movie is seen, uncheck 
@@ -377,24 +379,30 @@ namespace MovieManager.ViewModel
         using (TextWriter tw = new StreamWriter(DBPath))
         {
           // Update reading model object with new values
-          readingModel.Movies = MoviesViewModel.SaveValues();
+          readingModel.NonWatchedMovies = MoviesViewModel.SaveValues();
+          readingModel.WatchedMovies = WatchedMoviesViewModel.SaveValues();
 
           x.Serialize(tw, readingModel);
         }
         MessageBox.Show("Values saved");
       }
 
-      // Deactive Save button when values are saved
-      ChangesDetected = false;
+      // Reloades the just saved values from the db. 
+      // TODO: Delete the affected values from their respective Observable collection, instead of overriding with values from db
+      Load();
+
+
+
       // Collaps add movie view if visible
-      if(AddMovieViewVisibility)
+      if (AddMovieViewVisibility)
         ExpandOrCollapsAddMovieView();
 
       // Deactivate Load button. 
       // Because changes are saved to the db file, the filewatcher notices the change and activates the load button.
       // Consider making some kind of validation to check for same content in db file as that in the datagrid
       CheckCanLoad = false;
-
+      // Deactive Save button when values are saved
+      ChangesDetected = false;
     }
 
     #endregion

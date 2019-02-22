@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Serialization;
 using MovieManager.FilesystemHandler;
 using MovieManager.Models;
 using MovieManager.ViewModel;
@@ -25,6 +27,28 @@ namespace MovieManager
     {
       base.OnStartup(e);
 
+      // If db file does not yet exist, create one with dummy data so the application is able to start
+      if (!File.Exists(DBPath))
+      {
+        File.Create(DBPath).Close();
+        XmlSerializer x = new XmlSerializer(typeof(ReadingModel));
+        if (!string.IsNullOrWhiteSpace(DBPath) && File.Exists(DBPath))
+        {
+          using (TextWriter tw = new StreamWriter(DBPath))
+          {
+            // Update reading model object with new values
+            MovieModel model = new MovieModel { Title = "Movie Title: Example", Genre = "Action", Duration = 55, ReleaseYear = 1999, IsMovieSeen = false };
+
+            List<MovieModel> startupList = new List<MovieModel>();
+            startupList.Add(model);
+            ReadingModel initial = new ReadingModel();
+            initial.NonWatchedMovies = startupList;
+
+            x.Serialize(tw, initial);
+          }
+        }
+      }
+        
 
       ReadingModel readingModel = new ReadingModel(DBPath); // Reading Model ( Reads data from db file and saves it in a list of movie objects)
 

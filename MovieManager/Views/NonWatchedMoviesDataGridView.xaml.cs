@@ -18,9 +18,9 @@ namespace MovieManager.Views
   /// <summary>
   /// Interaction logic for MovieView.xaml
   /// </summary>
-  public partial class MovieDataGridView : UserControl
+  public partial class NonWatchedMoviesDataGridView : UserControl
   {
-    public MovieDataGridView()
+    public NonWatchedMoviesDataGridView()
     {
       InitializeComponent();
     }
