@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Serialization;
 using MovieManager.Command.MovieManager.Command;
+using MovieManager.Helpers;
 using MovieManager.Models;
 using MovieManager.ViewModels;
 
@@ -31,6 +32,11 @@ namespace MovieManager.ViewModel
 
       // ReadingModel contains a list (readingModel.Movies) of movie objects data fetched from the database
       this.readingModel = readingModel;
+
+      
+
+      WatchedMoviesViewModel = new WatchedMoviesViewModel(readingModel.WatchedMovies);
+
 
       // Pass list of movie objects to the MoviesViewModel
       MoviesViewModel = new MoviesViewModel(readingModel.Movies);
@@ -59,7 +65,7 @@ namespace MovieManager.ViewModel
     #region Properties
 
     public MoviesViewModel MoviesViewModel { get; set; }
-
+    public WatchedMoviesViewModel WatchedMoviesViewModel { get; set; }
 
     private bool _pubSubTestChecked;
     public bool PubSubTestChecked
@@ -73,13 +79,8 @@ namespace MovieManager.ViewModel
         if (_pubSubTestChecked != value)
         {
           _pubSubTestChecked = value;
-          //OnPropertyChanged(nameof(PubSubTestChecked));
-
-          // When PubSubTestChanged's value is changed to either true or false, raise even
-          if (value)
-            PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Red"));
-          else
-            PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Blue"));
+          OnPropertyChanged(nameof(PubSubTestChecked));
+          
         }
       }
     }
@@ -192,7 +193,6 @@ namespace MovieManager.ViewModel
     }
 
 
-
     /* If any changes have been made to any of the UI fields */
     private bool _changesDetected;
     public bool ChangesDetected
@@ -242,10 +242,8 @@ namespace MovieManager.ViewModel
     private void MainWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
       // All fields except IsSeen should be edited before one can add a movie
-      if (AddTitle != null && AddGenre != null && AddDuration != 0 && AddReleaseYear != 0)
-      {
-        CheckCanAddMovie = true;
-      }
+      CheckCanAddMovie = (AddTitle != null && AddGenre != null && AddDuration >= 1 && (AddReleaseYear >= 1895 && AddReleaseYear <= 2100)) ? true : false;
+ 
     }
 
     // This event gets called whenever a change in any of MovieModel's properties is detected
@@ -264,13 +262,14 @@ namespace MovieManager.ViewModel
 
     private bool CanAddMovie()
     {
-      // You can always add new movoe
+      // You can only add a new movie if the fields are properly filled
       return CheckCanAddMovie;
     }
 
     // Method for determining whether save button can be clicked or not
     private bool CanSave()
     {
+      // Save button is only enabled if some changes have been noticed
       return ChangesDetected;
     }
 
@@ -280,18 +279,17 @@ namespace MovieManager.ViewModel
       return true;
     }
 
-    // Method for determining whether load button can be clicked or not
+   
     private bool CanLoad()
     {
+      // Method for determining whether load button can be clicked or not
       return CheckCanLoad;
     }
-
 
 
     #endregion
 
     #region Methods
-
 
 
     private void Load()
@@ -309,7 +307,7 @@ namespace MovieManager.ViewModel
 
     public void UpdateValues(ReadingModel readingModel)
     {
-      // Update values by putting loaded values into movies collection, which then repopulates the datagrid since the collectio changed
+      // Update values by putting loaded values from DB into movies collection, which then repopulates the datagrid since the collection changed
       MoviesViewModel.LoadValues(readingModel.Movies);
       // Deactivate Load button after values updated
       ChangesDetected = false;
@@ -336,8 +334,19 @@ namespace MovieManager.ViewModel
     private void Test()
     {
 
+
+
+
+
       // Change value of PubSubTestChecked raise published event
       PubSubTestChecked = !PubSubTestChecked ? true : false;
+
+      //When PubSubTestChanged's value is changed to either true or false, raise event
+      if (PubSubTestChecked)
+        PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Red"));
+      else
+        PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Blue"));
+
     }
 
 
@@ -377,8 +386,9 @@ namespace MovieManager.ViewModel
 
       // Deactive Save button when values are saved
       ChangesDetected = false;
-      // Collaps add movie view
-      ExpandOrCollapsAddMovieView();
+      // Collaps add movie view if visible
+      if(AddMovieViewVisibility)
+        ExpandOrCollapsAddMovieView();
 
       // Deactivate Load button. 
       // Because changes are saved to the db file, the filewatcher notices the change and activates the load button.

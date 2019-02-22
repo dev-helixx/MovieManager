@@ -31,11 +31,13 @@ namespace MovieManager.ViewModels
 
     public MovieViewModel()
     {
-      PubSub<object>.Subscribe("PubSubTest", ToggleButtonCheckedHandler);
+      //Subscribe to published event in MainViewModel.cs
+      PubSub<object>.Subscribe("PubSubTest", PubSubTestHandler);
     }
 
-    private void ToggleButtonCheckedHandler(object sender, PubSubEventArgs<object> args)
+    private void PubSubTestHandler(object sender, PubSubEventArgs<object> args)
     {
+      // When PubSubtestChanged in MainViewModel.cs value changes to either true or false, this handler executes
       MessageBox.Show("PubSub event item received: " + (string)args.Item);
     }
     #endregion

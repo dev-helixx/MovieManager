@@ -56,16 +56,21 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FilesystemHandler\Filewatcher.cs" />
+    <Compile Include="Helpers\Validator.cs" />
     <Compile Include="Models\ReadingModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MoviesViewModel.cs" />
     <Compile Include="ViewModels\MovieViewModel.cs" />
+    <Compile Include="ViewModels\WatchedMoviesViewModel.cs" />
     <Compile Include="Views\AddMovieView.xaml.cs">
       <DependentUpon>AddMovieView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MovieDataGridView.xaml.cs">
       <DependentUpon>MovieDataGridView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WatchedMoviesDataGridView.xaml.cs">
+      <DependentUpon>WatchedMoviesDataGridView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -85,6 +90,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MovieDataGridView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WatchedMoviesDataGridView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
