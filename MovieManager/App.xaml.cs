@@ -19,7 +19,7 @@ namespace MovieManager
   public partial class App : Application
   {
 
-
+    // Database file path
     private const string DBPath = @"c:\tmp\movie_db.txt";
 
 
