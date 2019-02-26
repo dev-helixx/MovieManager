@@ -243,11 +243,17 @@ namespace MovieManager.ViewModel
       // All fields except IsSeen should be edited before one can add a movie
       CheckCanAddMovie = (AddTitle != null && AddGenre != null && AddDuration >= 1 && (AddReleaseYear >= 1895 && AddReleaseYear <= 2100)) ? true : false;
 
-      //When PubSubTestChanged's value is changed to either true or false, raise event
-      if (PubSubTestChecked)
-        PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Red"));
-      else
-        PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Blue"));
+
+      // Only raise event if OnPropertyChanged event of PubSubTestChecked is called
+      if(e.PropertyName == nameof(PubSubTestChecked))
+      {
+        //When PubSubTestChanged's value is changed to either true or false, raise event
+        if (PubSubTestChecked)
+          PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Red"));
+        else
+          PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Blue"));
+      }
+     
 
     }
 
