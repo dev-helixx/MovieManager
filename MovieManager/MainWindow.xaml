@@ -49,7 +49,7 @@
       <!--Row 3-->
       <Grid x:Name="NonWatchedContentGrid" Grid.Row="3">
         <!-- Set DataContext to MoviesViewModel for this specific view, and then in MovieView.xaml define what property to bind to -->
-        <views:NonWatchedMoviesDataGridView  Grid.Row="1" Background="Beige" x:Name="MovieView" Margin="5 5 5 5 " DataContext="{Binding MoviesViewModel}"/>
+        <views:NonWatchedMoviesDataGridView  Grid.Row="1" Background="Beige" x:Name="MovieView" Margin="5 5 5 5 " DataContext="{Binding NonWatchedMoviesViewModel}"/>
       </Grid>
 
       <!--Row 4-->

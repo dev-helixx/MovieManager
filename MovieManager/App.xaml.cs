@@ -28,6 +28,26 @@ namespace MovieManager
       base.OnStartup(e);
 
       // If db file does not yet exist, create one with dummy data so the application is able to start
+      InitDatabaseIfNotExist();
+
+      ReadingModel readingModel = new ReadingModel(DBPath); // Reading Model ( Reads data from db file and saves it in a list of movie objects)
+
+      var MainWindowViewModel = new MainViewModel(readingModel); // Pass model to MainViewModel
+
+      // Initialize filewatcher to watch for changes in the DB file
+      new Filewatcher(MainWindowViewModel).Init();
+
+
+      var mainWindow = new MainWindow
+      {
+        DataContext = MainWindowViewModel // Set datacontext to main ViewModel
+      };
+
+      mainWindow.Show();
+    }
+
+    private void InitDatabaseIfNotExist()
+    {
       if (!File.Exists(DBPath))
       {
         File.Create(DBPath).Close();
@@ -48,22 +68,6 @@ namespace MovieManager
           }
         }
       }
-        
-
-      ReadingModel readingModel = new ReadingModel(DBPath); // Reading Model ( Reads data from db file and saves it in a list of movie objects)
-
-      var MainWindowViewModel = new MainViewModel(readingModel); // Pass model to MainViewModel
-
-      // Initialize filewatcher to watch for changes in the DB file
-      new Filewatcher(MainWindowViewModel).Init();
-
-
-      var mainWindow = new MainWindow
-      {
-        DataContext = MainWindowViewModel // Set datacontext to main ViewModel
-      };
-
-      mainWindow.Show();
     }
   }
 }

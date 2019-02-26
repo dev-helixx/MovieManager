@@ -38,9 +38,9 @@ namespace MovieManager.ViewModel
       WatchedMoviesViewModel.PropertyChanged += MoviesViewModel_PropertyChanged;
 
       // Pass list of movie objects to the MoviesViewModel
-      MoviesViewModel = new NonWatchedMoviesViewModel(readingModel.NonWatchedMovies);
+      NonWatchedMoviesViewModel = new NonWatchedMoviesViewModel(readingModel.NonWatchedMovies);
       // Add an event to check for changes in the viewmodel or if the ViewModels OnpropertyChanged event is called
-      MoviesViewModel.PropertyChanged += MoviesViewModel_PropertyChanged;
+      NonWatchedMoviesViewModel.PropertyChanged += MoviesViewModel_PropertyChanged;
       // Add event to check for changes in MainViewModel
       this.PropertyChanged += MainWindowViewModel_PropertyChanged;
 
@@ -63,7 +63,7 @@ namespace MovieManager.ViewModel
 
     #region Properties
 
-    public NonWatchedMoviesViewModel MoviesViewModel { get; set; }
+    public NonWatchedMoviesViewModel NonWatchedMoviesViewModel { get; set; }
     public WatchedMoviesViewModel WatchedMoviesViewModel { get; set; }
 
     private bool _pubSubTestChecked;
@@ -242,7 +242,13 @@ namespace MovieManager.ViewModel
     {
       // All fields except IsSeen should be edited before one can add a movie
       CheckCanAddMovie = (AddTitle != null && AddGenre != null && AddDuration >= 1 && (AddReleaseYear >= 1895 && AddReleaseYear <= 2100)) ? true : false;
- 
+
+      //When PubSubTestChanged's value is changed to either true or false, raise event
+      if (PubSubTestChecked)
+        PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Red"));
+      else
+        PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Blue"));
+
     }
 
     // This event gets called whenever a change in any of MovieModel's properties is detected
@@ -308,7 +314,7 @@ namespace MovieManager.ViewModel
     public void UpdateValues(ReadingModel readingModel)
     {
       // Update values by putting loaded values from DB into movies collection, which then repopulates the datagrid since the collection changed
-      MoviesViewModel.LoadValues(readingModel.NonWatchedMovies);
+      NonWatchedMoviesViewModel.LoadValues(readingModel.NonWatchedMovies);
       WatchedMoviesViewModel.LoadValues(readingModel.WatchedMovies);
       // Deactivate Load button after values updated
       ChangesDetected = false;
@@ -335,14 +341,9 @@ namespace MovieManager.ViewModel
     private void Test()
     {
 
-      // Change value of PubSubTestChecked raise published event
+      // Change value of PubSubTestChecked, which causes the onpropertychanged event to fire for MainViewModel
       PubSubTestChecked = !PubSubTestChecked ? true : false;
-
-      //When PubSubTestChanged's value is changed to either true or false, raise event
-      if (PubSubTestChecked)
-        PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Red"));
-      else
-        PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Blue"));
+ 
 
     }
 
@@ -355,7 +356,7 @@ namespace MovieManager.ViewModel
       if(AddIsSeen)
         WatchedMoviesViewModel.AddNewMovieToCollection(AddTitle, AddGenre, AddDuration, AddReleaseYear, AddIsSeen);
       else
-        MoviesViewModel.AddNewMovieToCollection(AddTitle, AddGenre, AddDuration, AddReleaseYear, AddIsSeen);
+        NonWatchedMoviesViewModel.AddNewMovieToCollection(AddTitle, AddGenre, AddDuration, AddReleaseYear, AddIsSeen);
       
 
       // Clear fields 
@@ -379,7 +380,7 @@ namespace MovieManager.ViewModel
         using (TextWriter tw = new StreamWriter(DBPath))
         {
           // Update reading model object with new values
-          readingModel.NonWatchedMovies = MoviesViewModel.SaveValues();
+          readingModel.NonWatchedMovies = NonWatchedMoviesViewModel.SaveValues();
           readingModel.WatchedMovies = WatchedMoviesViewModel.SaveValues();
 
           x.Serialize(tw, readingModel);

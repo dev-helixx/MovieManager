@@ -7,10 +7,10 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
   <Grid>
-      <!--Datacontext of this view is set to MoviesViewModel (in MainWindow.xaml) and below is bound to the propertu MoviesColleciton found in MoviesViewModel.cs -->
+      <!--Datacontext of this view is set to NonWatchedMoviesViewModel (in MainWindow.xaml) and below is bound to the property NonWatchedMoviesCollection found in NonWatchedMoviesViewModel.cs -->
     <DataGrid RowHeaderWidth="0"  x:Name="NonWatchedMoviesGrid" ItemsSource="{Binding NonWatchedMoviesCollection}" FontSize="16" CanUserAddRows="False" AutoGenerateColumns="false" >
       <DataGrid.Columns>
-        <!--Define Binding to each Column (It looks in the MoviesCollection) -->
+        <!--Define Binding to each Column -->
         <DataGridTextColumn Width="*" Header="Title" Binding="{Binding Title}" IsReadOnly="True"/>
         <DataGridTextColumn Header="Genre" Binding="{Binding Genre}" IsReadOnly="True" />
         <DataGridTextColumn Header="Duration" Binding="{Binding Duration, StringFormat={}{0} min}" IsReadOnly="True" />
