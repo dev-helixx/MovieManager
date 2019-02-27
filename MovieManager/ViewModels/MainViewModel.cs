@@ -16,6 +16,9 @@ namespace MovieManager.ViewModel
   public class MainViewModel : BaseViewModel
   {
 
+
+    
+
     #region Fields
     private const string DBPath = @"c:\tmp\movie_db.txt";
     #endregion
@@ -65,6 +68,8 @@ namespace MovieManager.ViewModel
     public NonWatchedMoviesViewModel NonWatchedMoviesViewModel { get; set; }
     public WatchedMoviesViewModel WatchedMoviesViewModel { get; set; }
     public AddMovieViewModel AddMovieViewModel { get; set; }
+
+    public string DisplayedImage { get { return "/MovieManager;component/Images/unnamed.png"; } }
 
     private bool _pubSubTestChecked;
     public bool PubSubTestChecked

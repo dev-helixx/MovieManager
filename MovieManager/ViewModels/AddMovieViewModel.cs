@@ -7,9 +7,12 @@ namespace MovieManager.ViewModels
   public class AddMovieViewModel : BaseViewModel
   {
 
-    WatchedMoviesViewModel wmvm;
-    NonWatchedMoviesViewModel nwvm;
-    MainViewModel mvm;
+    #region Private Members
+    private WatchedMoviesViewModel wmvm;
+    private NonWatchedMoviesViewModel nwvm;
+    private MainViewModel mvm;
+
+    #endregion
 
     #region Constructors
     public AddMovieViewModel(MainViewModel mvm, WatchedMoviesViewModel wmvm, NonWatchedMoviesViewModel nwvm)
@@ -182,7 +185,6 @@ namespace MovieManager.ViewModels
 
     #endregion
 
-
     #region Methods
     private void ExpandOrCollapsAddMovieView()
     {
@@ -219,7 +221,6 @@ namespace MovieManager.ViewModels
 
     }
     #endregion
-
 
   }
 }

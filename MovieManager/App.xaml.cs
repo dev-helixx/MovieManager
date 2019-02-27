@@ -32,18 +32,21 @@ namespace MovieManager
 
       ReadingModel readingModel = new ReadingModel(DBPath); // Reading Model ( Reads data from db file and saves it in a list of movie objects)
 
-      var MainWindowViewModel = new MainViewModel(readingModel); // Pass model to MainViewModel
+      var MainViewModel = new MainViewModel(readingModel); // Pass model to MainViewModel
 
       // Initialize filewatcher to watch for changes in the DB file
-      new Filewatcher(MainWindowViewModel).Init();
+      new Filewatcher(MainViewModel).Init();
+
+      LoginWindow l = new LoginWindow { DataContext = MainViewModel };
+      l.Show();
 
 
-      var mainWindow = new MainWindow
-      {
-        DataContext = MainWindowViewModel // Set datacontext to main ViewModel
-      };
+      //var mainWindow = new MainWindow
+      //{
+      //  DataContext = MainWindowViewModel // Set datacontext to main ViewModel
+      //};
 
-      mainWindow.Show();
+      //mainWindow.Show();
     }
 
     private void InitDatabaseIfNotExist()

@@ -57,9 +57,13 @@
     </ApplicationDefinition>
     <Compile Include="FilesystemHandler\Filewatcher.cs" />
     <Compile Include="Helpers\Validator.cs" />
+    <Compile Include="LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\ReadingModel.cs" />
     <Compile Include="ViewModels\AddMovieViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NonWatchedMoviesViewModel.cs" />
     <Compile Include="ViewModels\MovieViewModel.cs" />
@@ -67,12 +71,19 @@
     <Compile Include="Views\AddMovieView.xaml.cs">
       <DependentUpon>AddMovieView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ModernLoginWindow.xaml.cs">
+      <DependentUpon>ModernLoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NonWatchedMoviesDataGridView.xaml.cs">
       <DependentUpon>NonWatchedMoviesDataGridView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WatchedMoviesDataGridView.xaml.cs">
       <DependentUpon>WatchedMoviesDataGridView.xaml</DependentUpon>
     </Compile>
+    <Page Include="LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -87,6 +98,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\AddMovieView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ModernLoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -126,6 +141,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\unnamed.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

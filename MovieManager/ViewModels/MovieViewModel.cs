@@ -24,8 +24,6 @@ namespace MovieManager.ViewModels
       // Load values from Movie model into properties
       LoadValues();
 
-     
-
     }
 
 
@@ -129,7 +127,7 @@ namespace MovieManager.ViewModels
 
     public MovieModel SaveValues()
     {
-      // When saving new data, create a new Movie model containting that data and save the new object
+      // When saving new data, create a new Movie model containing that data and return the new object
       return new MovieModel { Title = Title, Genre = Genre, Duration = Duration, ReleaseYear = ReleaseYear, IsMovieSeen = IsMovieSeen };
     }
 
