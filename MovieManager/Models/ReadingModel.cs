@@ -28,7 +28,6 @@ namespace MovieManager.Models
 
     public ReadingModel(string DBPath)
     {
-
       // Fetch data from DB file
       ReadingModel readingModel = new ReadingModel();
       XmlSerializer x = new XmlSerializer(typeof(ReadingModel));

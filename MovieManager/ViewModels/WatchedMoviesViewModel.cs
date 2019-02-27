@@ -73,7 +73,8 @@ namespace MovieManager.ViewModels
       foreach (MovieViewModel movie in WatchedMoviesCollection)
       {
         // Overrides existing content in the list
-        result.Add(movie.SaveValues());
+        //if(movie.IsMovieSeen)
+          result.Add(movie.SaveValues());
       }
 
       return result;

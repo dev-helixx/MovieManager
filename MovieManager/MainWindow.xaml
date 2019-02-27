@@ -35,12 +35,12 @@
       <!--Row 0-->
       <Grid x:Name = "NavBar" Grid.Row = "0" HorizontalAlignment="Left">
         <!--<CheckBox Margin="5 7 5 5" x:Name="EditCheckBox" Content="Edit mode" Grid.Row="0" Grid.Column="0"  IsChecked="{Binding EditIsChecked, UpdateSourceTrigger=PropertyChanged}" Command = "{Binding EditCommand}" />-->
-        <Button Margin="5" Padding="5 5 5 5" x:Name="AddMovie" Content="Add new Movie" Grid.Row="0" Grid.Column="1" Command="{Binding ExpandAddMovieViewCommand}"/>
+        <Button Margin="5" Padding="5 5 5 5" x:Name="AddMovie" Content="Add new Movie" Grid.Row="0" Grid.Column="1" DataContext="{Binding AddMovieViewModel}" Command="{Binding ExpandAddMovieViewCommand}"/>
       </Grid>
 
       <!--Row 1-->
       <Grid x:Name="AddMovieGrid" Grid.Row="1">
-        <views:AddMovieView Visibility="{Binding AddMovieViewVisibility,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource booleanToVisibilityConverter}}" />
+        <views:AddMovieView DataContext="{Binding AddMovieViewModel}" Visibility="{Binding AddMovieViewVisibility,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource booleanToVisibilityConverter}}" />
       </Grid>
 
       <!--Row 2-->

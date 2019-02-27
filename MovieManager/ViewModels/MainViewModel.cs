@@ -26,29 +26,28 @@ namespace MovieManager.ViewModel
     public MainViewModel(ReadingModel readingModel)
     {
 
-
       // Publish an event with eventName = PubSubTest. Others can subscribe to said eventName, in order to catch when it is raised
       PubSub<object>.PublishEvent("PubSubTest", PubSubCheckedHandler);
 
-      // ReadingModel contains a list (readingModel.Movies) of movie objects data fetched from the database
+      // ReadingModel contains a list of movie objects data fetched from the database
       this.readingModel = readingModel;
 
 
-      WatchedMoviesViewModel = new WatchedMoviesViewModel(readingModel.WatchedMovies);
-      WatchedMoviesViewModel.PropertyChanged += MoviesViewModel_PropertyChanged;
+      // Initialize other viewmodels
+      WatchedMoviesViewModel = new WatchedMoviesViewModel(readingModel.WatchedMovies); // Pass list of movie objects to the WatchedMovies
+      NonWatchedMoviesViewModel = new NonWatchedMoviesViewModel(readingModel.NonWatchedMovies); // Pass list of movie objects to the NonWatchedMovies
+      AddMovieViewModel = new AddMovieViewModel(this, WatchedMoviesViewModel, NonWatchedMoviesViewModel); // Pass reference for mainviewmodel and both datagrids, so when we add a new movie we know where to put it
 
-      // Pass list of movie objects to the MoviesViewModel
-      NonWatchedMoviesViewModel = new NonWatchedMoviesViewModel(readingModel.NonWatchedMovies);
-      // Add an event to check for changes in the viewmodel or if the ViewModels OnpropertyChanged event is called
+      // Subscribe to the ViewModels' OnpropertyChanged event
+      WatchedMoviesViewModel.PropertyChanged += MoviesViewModel_PropertyChanged;
       NonWatchedMoviesViewModel.PropertyChanged += MoviesViewModel_PropertyChanged;
-      // Add event to check for changes in MainViewModel
-      this.PropertyChanged += MainWindowViewModel_PropertyChanged;
+      this.PropertyChanged += MainWindowViewModel_PropertyChanged;    // Subscribe to MainViewModels OnPropertyChanged event to check for changes in MainViewModel
+
+
 
       // Register commands so we are able to execute specific buttons
       RegisterCommand(SaveCommand = new ActionCommand(Save, CanSave));
       RegisterCommand(LoadCommand = new ActionCommand(Load, CanLoad));
-      RegisterCommand(AddMovieCommand = new ActionCommand(AddMovie, CanAddMovie));
-      RegisterCommand(ExpandAddMovieViewCommand = new ActionCommand(ExpandOrCollapsAddMovieView, CanExpandView));
       RegisterCommand(TestCommand = new ActionCommand(Test, CanTest));
 
 
@@ -65,6 +64,7 @@ namespace MovieManager.ViewModel
 
     public NonWatchedMoviesViewModel NonWatchedMoviesViewModel { get; set; }
     public WatchedMoviesViewModel WatchedMoviesViewModel { get; set; }
+    public AddMovieViewModel AddMovieViewModel { get; set; }
 
     private bool _pubSubTestChecked;
     public bool PubSubTestChecked
@@ -114,85 +114,7 @@ namespace MovieManager.ViewModel
       }
     }
 
-
-
-    private string _addTitle;
-    public string AddTitle
-    {
-      get { return _addTitle; }
-      set
-      {
-        if(_addTitle != value)
-        {
-          _addTitle = value;
-          OnPropertyChanged(nameof(AddTitle));
-        }
-      }
-    }
-
-    private string _addGenre;
-    public string AddGenre
-    {
-      get { return _addGenre; }
-      set
-      {
-        if (_addGenre != value)
-        {
-          _addGenre = value;
-          OnPropertyChanged(nameof(AddGenre));
-        }
-      }
-    }
-
-    private int _addDuration;
-    public int AddDuration
-    {
-      get
-      {
-        return _addDuration;
-      }
-      set
-      {
-        if (_addDuration != value)
-        {
-          _addDuration = value;
-          OnPropertyChanged(nameof(AddDuration));
-        }
-      }
-    }
-
-    private int _addReleaseYear;
-    public int AddReleaseYear
-    {
-      get
-      {
-        return _addReleaseYear;
-      }
-      set
-      {
-        if (_addReleaseYear != value)
-        {
-          _addReleaseYear = value;
-          OnPropertyChanged(nameof(AddReleaseYear));
-        }
-      }
-    }
-    private bool _addIsSeen;
-    public bool AddIsSeen
-    {
-      get { return _addIsSeen; }
-      set
-      {
-        if(_addIsSeen != value)
-        {
-          _addIsSeen = value;
-          OnPropertyChanged(nameof(AddIsSeen));
-        }
-      }
-    }
-
-
-    /* If any changes have been made to any of the UI fields */
+    /* If any changes have been made to any of the MainViewModels UI controls */
     private bool _changesDetected;
     public bool ChangesDetected
     {
@@ -208,19 +130,6 @@ namespace MovieManager.ViewModel
     }
 
 
-    private bool _addMovieViewVisibility;
-    public bool AddMovieViewVisibility
-    {
-      get { return _addMovieViewVisibility; }
-      set
-      {
-        if(_addMovieViewVisibility != value)
-        {
-          _addMovieViewVisibility = value;
-          OnPropertyChanged(nameof(AddMovieViewVisibility));
-        }
-      }
-    }
 
     #endregion
 
@@ -228,10 +137,7 @@ namespace MovieManager.ViewModel
 
     public ActionCommand LoadCommand { get; set; }
     public ActionCommand SaveCommand { get; set; }
-    public ActionCommand AddMovieCommand { get; set; }
-    public ActionCommand ExpandAddMovieViewCommand { get; set; }
     public ActionCommand TestCommand { get; set; }
-
 
     #endregion
 
@@ -240,10 +146,8 @@ namespace MovieManager.ViewModel
     // This event gets called whenever a change in any of MainViewModels properties (those who have UpdateSourceTrigger attached) is detected
     private void MainWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-      // All fields except IsSeen should be edited before one can add a movie
-      CheckCanAddMovie = (AddTitle != null && AddGenre != null && AddDuration >= 1 && (AddReleaseYear >= 1895 && AddReleaseYear <= 2100)) ? true : false;
 
-
+      //MessageBox.Show(e.PropertyName);
       // Only raise event if OnPropertyChanged event of PubSubTestChecked is called
       if(e.PropertyName == nameof(PubSubTestChecked))
       {
@@ -260,6 +164,7 @@ namespace MovieManager.ViewModel
     // This event gets called whenever a change in any of MovieModel's properties is detected
     private void MoviesViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
+      // When a change in either datagrid is detected, change value to true
       ChangesDetected = true;
     }
 
@@ -268,6 +173,7 @@ namespace MovieManager.ViewModel
     #region Bool Return-Methods
     private bool CanExpandView()
     {
+      // One can always click the expand addmovieview button
       return true;
     }
 
@@ -297,12 +203,9 @@ namespace MovieManager.ViewModel
       return CheckCanLoad;
     }
 
-
     #endregion
 
     #region Methods
-
-
     private void Load()
     {
       // Load new values from db into new reading object
@@ -327,51 +230,11 @@ namespace MovieManager.ViewModel
     }
 
 
-    private void ExpandOrCollapsAddMovieView()
-    {
-
-      if (!AddMovieViewVisibility)
-      {
-        AddMovieViewVisibility = true;
-      }
-      else
-      {
-        AddMovieViewVisibility = false;
-
-      }
-      //AddMovieViewVisibility = !AddMovieViewVisibility ? true : false;
-    }
-
-
-
     private void Test()
     {
-
       // Change value of PubSubTestChecked, which causes the onpropertychanged event to fire for MainViewModel
       PubSubTestChecked = !PubSubTestChecked ? true : false;
  
-
-    }
-
-
-
-    private void AddMovie()
-    {
-
-      // Add new entry to collection
-      if(AddIsSeen)
-        WatchedMoviesViewModel.AddNewMovieToCollection(AddTitle, AddGenre, AddDuration, AddReleaseYear, AddIsSeen);
-      else
-        NonWatchedMoviesViewModel.AddNewMovieToCollection(AddTitle, AddGenre, AddDuration, AddReleaseYear, AddIsSeen);
-      
-
-      // Clear fields 
-      AddTitle = ""; AddGenre = ""; AddDuration = 0; AddReleaseYear = 0;
-      // If Movie is seen, uncheck 
-      if (AddIsSeen) AddIsSeen = false;
-      // Enable save button
-      ChangesDetected = true;
-
     }
 
 
@@ -386,8 +249,32 @@ namespace MovieManager.ViewModel
         using (TextWriter tw = new StreamWriter(DBPath))
         {
           // Update reading model object with new values
-          readingModel.NonWatchedMovies = NonWatchedMoviesViewModel.SaveValues();
-          readingModel.WatchedMovies = WatchedMoviesViewModel.SaveValues();
+
+          // Temp list to hold sorted objects according to their IsMovieSeen value
+          var tempWatched = new List<MovieModel>();
+          var tempNonWatched = new List<MovieModel>();
+
+          // Sort Nonwatched movies and move objects to correct list
+          foreach(var movie in NonWatchedMoviesViewModel.SaveValues())
+          {
+            if (movie.IsMovieSeen)
+              tempWatched.Add(movie);
+            else
+              tempNonWatched.Add(movie);
+          }
+
+          // Sort Watched movies and move objects to correct list
+          foreach (var movie in WatchedMoviesViewModel.SaveValues())
+          {
+            if (movie.IsMovieSeen)
+              tempWatched.Add(movie);
+            else
+              tempNonWatched.Add(movie);
+          }
+
+          // Update reading model object and save it to the db file
+          readingModel.NonWatchedMovies = tempNonWatched;
+          readingModel.WatchedMovies = tempWatched;
 
           x.Serialize(tw, readingModel);
         }
@@ -401,8 +288,8 @@ namespace MovieManager.ViewModel
 
 
       // Collaps add movie view if visible
-      if (AddMovieViewVisibility)
-        ExpandOrCollapsAddMovieView();
+      //if (AddMovieViewVisibility)
+      //  ExpandOrCollapsAddMovieView();
 
       // Deactivate Load button. 
       // Because changes are saved to the db file, the filewatcher notices the change and activates the load button.

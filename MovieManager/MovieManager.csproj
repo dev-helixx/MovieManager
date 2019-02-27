@@ -58,6 +58,7 @@
     <Compile Include="FilesystemHandler\Filewatcher.cs" />
     <Compile Include="Helpers\Validator.cs" />
     <Compile Include="Models\ReadingModel.cs" />
+    <Compile Include="ViewModels\AddMovieViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NonWatchedMoviesViewModel.cs" />
