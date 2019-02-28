@@ -6,7 +6,7 @@
         xmlns:views = "clr-namespace:MovieManager.Views"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="Movie Manager" Height="800" Width="1000">
+        Title="Movie Manager" Height="800" Width="1000" >
 
 
 

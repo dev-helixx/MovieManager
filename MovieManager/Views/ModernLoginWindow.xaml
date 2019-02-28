@@ -33,7 +33,7 @@
               FontWeight="Medium"
               Foreground="White"
               Target="{Binding ElementName=UserId}"  
-              Content="Login"/>
+              Content="User ID"/>
         <TextBox x:Name="UserId"
                  Margin="0 4 0 0"
                  Height="22"
@@ -50,7 +50,8 @@
                Content="Password" 
                Visibility="{Binding PasswordVisible}" 
                IsTabStop="False"/>
-        <PasswordBox x:Name="Password"
+        <TextBox x:Name="Password1"
+                 Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  BorderThickness="0"
                  Margin="0 4 0 0"
                  Height="22"
@@ -77,8 +78,7 @@
             Width="220"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
-            Height="40"
-            DataContext="{Binding LoginViewModel}">
+            Height="40">
       <Button.Template>
         <ControlTemplate TargetType="{x:Type Button}">
           <Border x:Name="bdr_main" 

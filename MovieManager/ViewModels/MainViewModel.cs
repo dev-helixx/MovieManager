@@ -69,8 +69,7 @@ namespace MovieManager.ViewModel
     public WatchedMoviesViewModel WatchedMoviesViewModel { get; set; }
     public AddMovieViewModel AddMovieViewModel { get; set; }
 
-    public string DisplayedImage { get { return "/MovieManager;component/Images/unnamed.png"; } }
-
+   
     private bool _pubSubTestChecked;
     public bool PubSubTestChecked
     {

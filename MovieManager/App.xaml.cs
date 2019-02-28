@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Serialization;
 using MovieManager.FilesystemHandler;
+using MovieManager.Helpers;
 using MovieManager.Models;
 using MovieManager.ViewModel;
+using MovieManager.ViewModels;
 
 namespace MovieManager
 {
@@ -30,15 +32,12 @@ namespace MovieManager
       // If db file does not yet exist, create one with dummy data so the application is able to start
       InitDatabaseIfNotExist();
 
-      ReadingModel readingModel = new ReadingModel(DBPath); // Reading Model ( Reads data from db file and saves it in a list of movie objects)
+      //ReadingModel readingModel = new ReadingModel(DBPath); // Reading Model ( Reads data from db file and saves it in a list of movie objects)
 
-      var MainViewModel = new MainViewModel(readingModel); // Pass model to MainViewModel
+      //var mainVM = new MainViewModel(readingModel); // Pass model to MainViewModel
 
-      // Initialize filewatcher to watch for changes in the DB file
-      new Filewatcher(MainViewModel).Init();
-
-      LoginWindow l = new LoginWindow { DataContext = MainViewModel };
-      l.Show();
+      //// Initialize filewatcher to watch for changes in the DB file
+      //new Filewatcher(mainVM).Init();
 
 
       //var mainWindow = new MainWindow
@@ -47,6 +46,13 @@ namespace MovieManager
       //};
 
       //mainWindow.Show();
+
+      var loginVM = new LoginViewModel();
+      LoginWindow l = new LoginWindow { DataContext = loginVM };
+      l.Show();
+
+
+  
     }
 
     private void InitDatabaseIfNotExist()

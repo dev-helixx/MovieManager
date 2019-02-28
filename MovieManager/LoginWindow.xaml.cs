@@ -24,13 +24,6 @@ namespace MovieManager
     {
       InitializeComponent();
 
-
-      string user = "silas";
-      string pass = "silas";
-
-
-      LoginViewModel vm = new LoginViewModel();
-
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)
