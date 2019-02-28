@@ -7,8 +7,8 @@
     <ProjectGuid>{AE738003-8287-43CB-BF2F-88D508324C84}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CountLinesExtension</RootNamespace>
-    <AssemblyName>CountLinesExtension</AssemblyName>
+    <RootNamespace>EncryptExtension</RootNamespace>
+    <AssemblyName>EncryptExtension</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -34,7 +34,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>CountLinesExtension.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>EncryptExtension.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SharpShell">
@@ -52,12 +52,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CountLinesExtension.cs" />
+    <Compile Include="EncryptExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="CountLinesExtension.snk" />
+    <None Include="EncryptExtension.snk" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\lock.png" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\security.png" />
+    <Content Include="Images\shield.png" />
+    <Content Include="Images\shield2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

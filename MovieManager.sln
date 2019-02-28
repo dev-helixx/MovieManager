@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieManager", "MovieManager\MovieManager.csproj", "{66732600-CC31-4E4E-904C-B6C6EF1B7576}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountLinesExtension", "CountLinesExtension\CountLinesExtension.csproj", "{AE738003-8287-43CB-BF2F-88D508324C84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptExtension", "EncryptExtension\EncryptExtension.csproj", "{AE738003-8287-43CB-BF2F-88D508324C84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

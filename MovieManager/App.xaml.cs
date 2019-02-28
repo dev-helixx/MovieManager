@@ -27,6 +27,8 @@ namespace MovieManager
 
     protected override void OnStartup(StartupEventArgs e)
     {
+
+     
       base.OnStartup(e);
 
       // If db file does not yet exist, create one with dummy data so the application is able to start
@@ -46,6 +48,12 @@ namespace MovieManager
       //};
 
       //mainWindow.Show();
+
+
+      foreach(var arg in e.Args)
+      {
+        MessageBox.Show(arg.ToString());
+      }
 
       var loginVM = new LoginViewModel();
       LoginWindow l = new LoginWindow { DataContext = loginVM };
