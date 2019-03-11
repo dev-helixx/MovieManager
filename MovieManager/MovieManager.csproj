@@ -68,7 +68,7 @@
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\ReadingModel.cs" />
+    <Compile Include="Helpers\ReadingEntity.cs" />
     <Compile Include="ViewModels\AddMovieViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
