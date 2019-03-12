@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Security;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -69,6 +71,11 @@ namespace MovieManager.ViewModels
 
       // Initialize filewatcher to watch for changes in the DB file
       new Filewatcher(mainVM).Init();
+ 
+
+
+      ProgressRingVisibility = true;
+
 
 
       var mainWindow = new MainWindow
@@ -76,12 +83,14 @@ namespace MovieManager.ViewModels
         DataContext = mainVM // Set datacontext to main ViewModel
       };
 
-      mainWindow.Show();
+      //mainWindow.Show();
 
-      Application.Current.Windows[0].Close();
+      ////Application.Current.Windows[0].Close();
 
       //}
     }
+
+
     #endregion
 
 
@@ -91,6 +100,20 @@ namespace MovieManager.ViewModels
     public string DisplayedImage { get { return "/MovieManager;component/Images/unnamed.png"; } }
 
   
+    private bool _progressRingVisibility;
+    public bool ProgressRingVisibility
+    {
+      get { return _progressRingVisibility; }
+      set
+      {
+        if(value != _progressRingVisibility)
+        {
+          _progressRingVisibility = value;
+          OnPropertyChanged(nameof(ProgressRingVisibility));
+        }
+      }
+    }
+
 
     private bool _checkCanLogin;
     public bool CheckCanLogin
