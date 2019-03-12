@@ -68,7 +68,7 @@ namespace MovieManager
       if (!File.Exists(DBPath))
       {
         File.Create(DBPath).Close();
-        XmlSerializer x = new XmlSerializer(typeof(ReadingModel));
+        XmlSerializer x = new XmlSerializer(typeof(ReadingEntity));
         if (!string.IsNullOrWhiteSpace(DBPath) && File.Exists(DBPath))
         {
           using (TextWriter tw = new StreamWriter(DBPath))
@@ -78,7 +78,7 @@ namespace MovieManager
 
             List<MovieModel> startupList = new List<MovieModel>();
             startupList.Add(model);
-            ReadingModel initial = new ReadingModel();
+            ReadingEntity initial = new ReadingEntity();
             initial.NonWatchedMovies = startupList;
 
             x.Serialize(tw, initial);

@@ -15,7 +15,7 @@ namespace MovieManager.Helpers
 
     public static bool IsValidEmailAddress(string emailInput)
     {
-      Regex regex = new Regex(@"^[\w-\.]+@([\w-]+\.)*[\w]+$");
+      Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
       if (emailInput != null)
         return regex.IsMatch(emailInput);
       return false;

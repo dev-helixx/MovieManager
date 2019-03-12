@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace MovieManager.Models
 {
-  public class ReadingModel
+  public class ReadingEntity
   {
 
 
@@ -17,7 +17,7 @@ namespace MovieManager.Models
     #endregion
 
     #region Constructors
-    public ReadingModel()
+    public ReadingEntity()
     {
 
       WatchedMovies = new List<MovieModel>();
@@ -26,16 +26,16 @@ namespace MovieManager.Models
     }
 
 
-    public ReadingModel(string DBPath)
+    public ReadingEntity(string DBPath)
     {
       // Fetch data from DB file
-      ReadingModel readingModel = new ReadingModel();
-      XmlSerializer x = new XmlSerializer(typeof(ReadingModel));
+      ReadingEntity readingModel = new ReadingEntity();
+      XmlSerializer x = new XmlSerializer(typeof(ReadingEntity));
       if (!string.IsNullOrWhiteSpace(DBPath) && File.Exists(DBPath))
       {
         using (TextReader tr = new StreamReader(DBPath))
         {
-            readingModel = (ReadingModel)x.Deserialize(tr);
+            readingModel = (ReadingEntity)x.Deserialize(tr);
         }
       }
        

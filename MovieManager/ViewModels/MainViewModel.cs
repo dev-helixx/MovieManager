@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ using System.Xml.Serialization;
 using MovieManager.Command.MovieManager.Command;
 using MovieManager.Helpers;
 using MovieManager.Models;
+using MovieManager.Properties;
 using MovieManager.ViewModels;
 
 namespace MovieManager.ViewModel
@@ -25,8 +27,8 @@ namespace MovieManager.ViewModel
 
     #region Constructors
 
-    private ReadingModel readingModel;
-    public MainViewModel(ReadingModel readingModel)
+    private ReadingEntity readingModel;
+    public MainViewModel(ReadingEntity readingModel)
     {
 
       // Publish an event with eventName = PubSubTest. Others can subscribe to said eventName, in order to catch when it is raised
@@ -213,7 +215,7 @@ namespace MovieManager.ViewModel
     private void Load()
     {
       // Load new values from db into new reading object
-      ReadingModel readingModel = new ReadingModel(DBPath);
+      ReadingEntity readingModel = new ReadingEntity(DBPath);
       // Update values
       UpdateValues(readingModel);
 
@@ -224,7 +226,7 @@ namespace MovieManager.ViewModel
     }
 
 
-    public void UpdateValues(ReadingModel readingModel)
+    public void UpdateValues(ReadingEntity readingModel)
     {
       // Update values by putting loaded values from DB into movies collection, which then repopulates the datagrid since the collection changed
       NonWatchedMoviesViewModel.LoadValues(readingModel.NonWatchedMovies);
@@ -237,7 +239,17 @@ namespace MovieManager.ViewModel
     private void Test()
     {
       // Change value of PubSubTestChecked, which causes the onpropertychanged event to fire for MainViewModel
-      PubSubTestChecked = !PubSubTestChecked ? true : false;
+      //PubSubTestChecked = !PubSubTestChecked ? true : false;
+      //MessageBox.Show(new StackFrame().GetMethod().Name);
+      string path_old = @"C:\users\silas\desktop\template.html";
+      string path_new = @"C:\users\silas\desktop\template1.html";
+
+      string template = Resources.AlerisEmailTemplate;
+
+
+      template = template.Replace("EmployeeNameAttribute", "Silas Stryhn");
+
+      File.WriteAllText(path_new, template);
  
     }
 
@@ -247,7 +259,7 @@ namespace MovieManager.ViewModel
     {
       
       //* Xml Serilizer to write data to an existing txt file */
-      XmlSerializer x = new XmlSerializer(typeof(ReadingModel));
+      XmlSerializer x = new XmlSerializer(typeof(ReadingEntity));
       if (!string.IsNullOrWhiteSpace(DBPath) && File.Exists(DBPath))
       {
         using (TextWriter tw = new StreamWriter(DBPath))
