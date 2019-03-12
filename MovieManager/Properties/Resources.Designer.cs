@@ -59,38 +59,5 @@ namespace MovieManager.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
-        ///&lt;html lang=&quot;en&quot;&gt;
-        ///
-        ///&lt;head&gt;
-        ///  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
-        ///  &lt;style type=&quot;text/css&quot; nonce=&quot;&quot;&gt;
-        ///
-        ///    body, td, div, p, a, input {
-        ///      font-family: arial, sans-serif;
-        ///    }
-        ///  &lt;/style&gt;
-        ///  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
-        ///  &lt;style type=&quot;text/css&quot; nonce=&quot;&quot;&gt;
-        ///
-        ///    body, td {
-        ///      font-size: 13px
-        ///    }
-        ///
-        ///    a:link, a:active {
-        ///      color: #1155CC;
-        ///      text-decoration: none
-        ///    }
-        ///
-        ///    a:hover {
-        ///      text-decoration:  [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string AlerisEmailTemplate {
-            get {
-                return ResourceManager.GetString("AlerisEmailTemplate", resourceCulture);
-            }
-        }
     }
 }
