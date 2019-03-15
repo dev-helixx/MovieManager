@@ -34,7 +34,7 @@ namespace MovieManager
       // If db file does not yet exist, create one with dummy data so the application is able to start
       InitDatabaseIfNotExist();
 
-      ReadingModel readingModel = new ReadingModel(DBPath); // Reading Model ( Reads data from db file and saves it in a list of movie objects)
+      ReadingEntity readingModel = new ReadingEntity(DBPath); // Reading Model ( Reads data from db file and saves it in a list of movie objects)
 
       var mainVM = new MainViewModel(readingModel); // Pass model to MainViewModel
 

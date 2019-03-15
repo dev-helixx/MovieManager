@@ -241,15 +241,8 @@ namespace MovieManager.ViewModel
       // Change value of PubSubTestChecked, which causes the onpropertychanged event to fire for MainViewModel
       //PubSubTestChecked = !PubSubTestChecked ? true : false;
       //MessageBox.Show(new StackFrame().GetMethod().Name);
-      string path_old = @"C:\users\silas\desktop\template.html";
-      string path_new = @"C:\users\silas\desktop\template1.html";
+      //string path_old = @"C:\users\silas\desktop\template.html";
 
-      string template = Resources.AlerisEmailTemplate;
-
-
-      template = template.Replace("EmployeeNameAttribute", "Silas Stryhn");
-
-      File.WriteAllText(path_new, template);
  
     }
 
