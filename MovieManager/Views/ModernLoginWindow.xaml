@@ -43,9 +43,19 @@
                  Margin="0 4 0 0"
                  Height="22"
                  BorderThickness="0"
-                 Text="{Binding UserId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                 Text="{Binding UserId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true}"  
                  HorizontalContentAlignment="Stretch"
-                 VerticalContentAlignment="Center"/>
+                 VerticalContentAlignment="Center">
+          <Validation.ErrorTemplate>
+            <ControlTemplate>
+              <StackPanel>
+                <!-- Placeholder for the TextBox itself -->
+                <AdornedElementPlaceholder x:Name="UserId"/>
+                <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red"/>
+              </StackPanel>
+            </ControlTemplate>
+          </Validation.ErrorTemplate>
+        </TextBox>
 
         <Label Padding="0 20 0 0"
                FontSize="14"
@@ -110,11 +120,7 @@
         </Button.Template>
       </Button>
 
-      <Border Padding="0 0 5 0">
-        <controls:ProgressRing IsActive="{Binding ProgressRingVisibility}" 
-                             Height="90" Width="90" 
-                             Foreground="LightBlue" />
-      </Border>
+ 
       
     </Grid>
     

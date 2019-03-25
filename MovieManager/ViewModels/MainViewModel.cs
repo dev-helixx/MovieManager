@@ -59,6 +59,7 @@ namespace MovieManager.ViewModel
     }
 
 
+
     #endregion
 
     #region Events
@@ -163,6 +164,8 @@ namespace MovieManager.ViewModel
         else
           PubSub<object>.RaiseEvent("PubSubTest", this, new PubSubEventArgs<object>("Blue"));
       }
+
+      
      
 
     }

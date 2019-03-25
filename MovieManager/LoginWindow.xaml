@@ -7,7 +7,7 @@
         xmlns:views="clr-namespace:MovieManager.Views"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Login" Height="430" Width="300"
+        Title="Login" Height="420" Width="300"
         WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#FF4697DE">
 
   <Window.Resources>
@@ -118,6 +118,12 @@
     
       </StackPanel>
 
+
+      <Border Padding="0 0 5 0">
+        <controls:ProgressRing IsActive="{Binding ProgressRingVisibility}" 
+                             Height="90" Width="90" 
+                             Foreground="LightBlue" />
+      </Border>
 
     </Grid>
 
